@@ -19,6 +19,6 @@ To get started with Prodia you need to first import the maven repository, here's
 TODO
 
 ### RoadMap
-- [ ] Create a Generation
-- [ ] Retrieve a Generation
+- [X] Create a Generation
+- [X] Retrieve a Generation
 - [ ] Transform an Existing image
