@@ -1,6 +1,6 @@
 package com.danlegt.containers;
 
-public record TextToImageResponse( String job, Object params, String imageUrl ) {
+public record TextToImageResponse( String job, String status, Object params, String imageUrl ) {
 
 	// TODO: Implement this
 

@@ -1,5 +1,7 @@
 package com.danlegt.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ProdiaModel {
 
 	ANALOG_DIFFUSION_10CKPT("analog-diffusion-1.0.ckpt [9ca13f02]"),
@@ -32,6 +34,7 @@ public enum ProdiaModel {
 		return this.id;
 	}
 
+	@JsonValue
 	public String getId() {
 		return this.toString();
 	}

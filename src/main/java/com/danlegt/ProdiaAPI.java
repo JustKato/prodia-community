@@ -4,10 +4,6 @@ import com.danlegt.containers.TextToImageRequest;
 import com.danlegt.containers.TextToImageResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -36,25 +32,16 @@ public class ProdiaAPI {
 		if ( requestData.cfg_scale() <= 0 )
 			throw new Exception("The CFG Scale can not be lower or equal to 0, please use a valid value");
 
-		return (TextToImageResponse) sendRequest(
-			PRODIA_TEXT_TO_IMAGE_ENDPOINT,
-			requestData,
-			TextToImageResponse.class
-		);
-	}
-
-	//#endregion
-
-
-	private <T> Object sendRequest( String urlString, T packet, Class responseType ) throws Exception {
 		final var om = new ObjectMapper();
 		HttpClient client = HttpClient.newHttpClient();
-		String requestBody = om.writeValueAsString(packet);
+		String requestBody = om.writeValueAsString(requestData);
 
 		HttpRequest request = HttpRequest.newBuilder()
-			.uri(URI.create(urlString))
+			.uri(URI.create(PRODIA_TEXT_TO_IMAGE_ENDPOINT))
 			.POST(HttpRequest.BodyPublishers.ofString(requestBody))
 			.header("X-Prodia-Key", this.apiKey)
+			.header("content-type", "application/json")
+			.header("X-API-USED"  , "com.danlegt.java")
 			.build();
 
 
@@ -64,7 +51,32 @@ public class ProdiaAPI {
 			throw new Exception("Error response code: \n" + response.body());
 		}
 
-		return om.readValue(response.body(), responseType);
+		return om.readValue(response.body(), TextToImageResponse.class);
 	}
+
+	public TextToImageResponse fetchTextToImage(String jobId ) throws Exception {
+
+		final var om = new ObjectMapper();
+		HttpClient client = HttpClient.newHttpClient();
+
+		HttpRequest request = HttpRequest.newBuilder()
+			.uri(URI.create(PRODIA_TEXT_TO_IMAGE_ENDPOINT + "/" + jobId))
+			.GET()
+			.header("X-Prodia-Key", this.apiKey)
+			.header("content-type", "application/json")
+			.header("X-API-USED"  , "com.danlegt.java")
+			.build();
+
+
+		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+		if ( response.statusCode() < 200 || response.statusCode() > 299 ) {
+			throw new Exception("Error response code: \n" + response.body());
+		}
+
+		return om.readValue(response.body(), TextToImageResponse.class);
+	}
+
+	//#endregion
 
 }

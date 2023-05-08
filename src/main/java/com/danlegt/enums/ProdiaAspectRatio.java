@@ -1,5 +1,8 @@
 package com.danlegt.enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * An identifier for the image aspect ratio, this is specifically for Prodia, these are simply resolutions with ids assigned
  */
@@ -23,6 +26,7 @@ public enum ProdiaAspectRatio {
 		return id;
 	}
 
+	@JsonValue
 	public String getId() {
 		return this.toString();
 	}

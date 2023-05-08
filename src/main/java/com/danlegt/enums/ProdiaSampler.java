@@ -1,5 +1,7 @@
 package com.danlegt.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ProdiaSampler {
 
 	EULER("Euler"),
@@ -18,6 +20,7 @@ public enum ProdiaSampler {
 		return this.id;
 	}
 
+	@JsonValue
 	public String getId() {
 		return this.toString();
 	}
