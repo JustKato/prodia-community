@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class StabilityTests {
 
-	private String apiKey;
+	private final String apiKey;
 
 	public StabilityTests() {
 		this.apiKey = System.getenv("PRODIA_KEY");
@@ -39,7 +39,6 @@ public class StabilityTests {
 		while ( response.imageUrl() == null && IMAGE_FETCH_TRIES > 0 ) {
 			response = p.fetchTextToImage(response.job());
 			IMAGE_FETCH_TRIES--;
-			Thread.sleep(250);
 		}
 
 		System.out.println("Image URL: " + response.imageUrl());
